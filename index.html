@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>FF Orders</title><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0f766e"><link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--tx:#1f2933;--mu:#6b7785;--br:#d5dbe1;--pr:#0f766e;--ok:#15803d;--bad:#b91c1c}
+*{box-sizing:border-box}body{margin:0;font:14px system-ui,sans-serif;background:var(--bg);color:var(--tx);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+header{background:var(--pr);color:#fff;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}header h1{font-size:17px;margin:0;flex:1}
+nav{display:flex;gap:6px}button,.btn{font:inherit;border:1px solid var(--br);background:#fff;color:var(--tx);padding:7px 12px;border-radius:7px;cursor:pointer}
+nav button{background:transparent;color:#fff;border-color:#ffffff66}nav button.on{background:#fff;color:var(--pr);font-weight:600}
+.p{background:var(--pr);color:#fff;border-color:var(--pr)}main{max-width:1100px;margin:auto;padding:12px}
+.card{background:var(--card);border:1px solid var(--br);border-radius:10px;padding:12px;margin-bottom:12px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}.stats div{background:var(--card);border:1px solid var(--br);border-radius:10px;padding:10px}.stats b{display:block;font-size:18px}.stats span{color:var(--mu);font-size:12px}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}label{font-size:12px;color:var(--mu);display:block}
+input,select{width:100%;font:inherit;padding:8px;border:1px solid var(--br);border-radius:7px;background:#fff}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;background:#fff}th,td{border:1px solid var(--br);padding:6px 8px;text-align:left;white-space:nowrap}th{background:#eef1f4;font-size:12px}
+.n{text-align:right}.pf{color:var(--ok);font-weight:600}.pf.neg{color:var(--bad)}
+.th{width:42px;height:42px;object-fit:cover;border-radius:6px;cursor:zoom-in;vertical-align:middle;margin-right:6px;border:1px solid var(--br)}
+.tabs{display:flex;gap:6px;margin:10px 0}.tabs button.on{background:var(--pr);color:#fff}
+.x{color:var(--bad);border-color:#f0c4c4}input[type=checkbox]{width:20px;height:20px}
+#lb{position:fixed;inset:0;background:#000d;display:none;align-items:center;justify-content:center;z-index:9}#lb img{max-width:94vw;max-height:90vh;border-radius:8px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>*{flex:0 0 auto}.row input,.row select{width:auto;min-width:130px}
+.sheet h2{text-align:center;margin:4px 0 10px;font-size:18px}.sheet td{height:24px}.sheet .gr{background:#e6e6e6}.hide{display:none}
+@media print{header,.noprint{display:none!important}body{background:#fff}.card{border:0;padding:0}th,td{border-color:#000}}
+</style></head><body>
+<header><h1>FF Online Shopping</h1><nav><button id="n1" class="on">Orders</button><button id="n2">Log Sheet</button></nav><button id="inst" class="hide">Install App</button></header>
+<main>
+<section id="v1">
+<div class="stats" id="st"></div>
+<form id="f" class="card" style="margin-top:12px"><div class="g">
+<div><label>Date (auto)</label><input type="date" id="date" required></div>
+<div><label>Customer name</label><input id="cu" required></div>
+<div><label>Phone number</label><input id="ph" type="tel" inputmode="tel"></div>
+<div><label>Product name</label><input id="pr" required></div>
+<div><label>Store name (buy from)</label><input id="sn" list="sl" required></div>
+<div><label>Cost</label><input id="co" type="number" step="any" min="0" inputmode="decimal" required></div>
+<div><label>Selling price</label><input id="sp" type="number" step="any" min="0" inputmode="decimal" required></div>
+<div><label>Profit (auto)</label><input id="pf" readonly></div>
+<div><label>Product image</label><input id="im" type="file" accept="image/*"></div></div>
+<div class="row" style="margin-top:10px"><img id="pv" class="th hide"><button class="p" id="sv">Add Order</button><button type="button" id="cn" class="hide">Cancel edit</button></div></form><datalist id="sl"></datalist>
+<div class="row noprint"><input id="q" placeholder="Search..."><select id="fs"></select><button id="csv">Export CSV</button><button id="bk">Backup</button><label class="btn" style="color:var(--tx)">Restore<input id="rs" type="file" accept=".json" class="hide"></label></div>
+<div class="tabs"><button id="t1" class="on">Pending</button><button id="t2">Delivered</button></div>
+<div class="tw"><table><thead><tr><th>No</th><th>Date</th><th>Customer</th><th>Phone</th><th>Product</th><th>Store</th><th>Cost</th><th>Price</th><th>Profit</th><th>✓</th><th></th></tr></thead><tbody id="tb"></tbody></table></div>
+</section>
+<section id="v2" class="hide"><div class="row noprint" style="margin-bottom:10px"><select id="ls"></select><select id="lt"><option value="pending">Pending</option><option value="delivered">Delivered</option><option value="all">All</option></select><button class="p" onclick="print()">Print / Save PDF</button></div>
+<div class="card sheet"><h2>FF online shopping<br>LOG</h2><div class="tw"><table><thead><tr><th>No</th><th>Name</th><th>Contact No</th><th>Product</th><th>Store</th><th class="gr">Cost</th><th>Selling price</th><th>✓</th></tr></thead><tbody id="lg"></tbody></table></div></div></section>
+</main><div id="lb" onclick="this.style.display='none'"><img id="lbi"></div>
+<script>
+const $=s=>document.querySelector(s),e=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fm=n=>(+n||0).toLocaleString(undefined,{maximumFractionDigits:2}),today=()=>new Date().toLocaleDateString('en-CA');
+const db=new Promise((r,j)=>{const q=indexedDB.open('ffshop',1);q.onupgradeneeded=()=>q.result.createObjectStore('o',{keyPath:'id'});q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)});
+const tx=async(m,f)=>{const d=await db;return new Promise((r,j)=>{const t=d.transaction('o',m),q=f(t.objectStore('o'));t.oncomplete=()=>r(q.result);t.onerror=()=>j(t.error)})};
+let O=[],tab='p',eid=null,img='',touched=false;
+const load=async()=>{O=await tx('readonly',s=>s.getAll());render()};
+function setDate(){if(!touched&&!eid)$('#date').value=today()}
+$('#date').oninput=()=>touched=true;setDate();setInterval(setDate,60000);document.addEventListener('visibilitychange',setDate);
+const calc=()=>{const p=$('#sp').value-$('#co').value;$('#pf').value=($('#sp').value&&$('#co').value)?fm(p):''};$('#sp').oninput=$('#co').oninput=calc;
+$('#im').onchange=ev=>{const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const k=Math.min(1,700/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);img=c.toDataURL('image/jpeg',.75);$('#pv').src=img;$('#pv').classList.remove('hide')};i.src=r.result};r.readAsDataURL(f)};
+function reset(){eid=null;img='';touched=false;$('#f').reset();$('#pv').classList.add('hide');$('#sv').textContent='Add Order';$('#cn').classList.add('hide');setDate();calc()}
+$('#cn').onclick=reset;
+$('#f').onsubmit=async ev=>{ev.preventDefault();const old=O.find(o=>o.id===eid)||{};
+const o={...old,id:eid||Date.now()+''+Math.random().toString(36).slice(2,5),created:old.created||Date.now(),date:$('#date').value,customer:$('#cu').value.trim(),phone:$('#ph').value.trim(),product:$('#pr').value.trim(),store:$('#sn').value.trim(),cost:+$('#co').value,price:+$('#sp').value,delivered:!!old.delivered,img};
+await tx('readwrite',s=>s.put(o));reset();load()};
+const prof=o=>o.price-o.cost;
+function flt(){const q=$('#q').value.toLowerCase(),s=$('#fs').value;return O.filter(o=>(!s||o.store===s)&&(!q||[o.customer,o.phone,o.product,o.store].join(' ').toLowerCase().includes(q))).sort((a,b)=>a.created-b.created)}
+function render(){
+const stores=[...new Set(O.map(o=>o.store))].sort();$('#sl').innerHTML=stores.map(s=>`<option value="${e(s)}">`).join('');
+for(const id of['#fs','#ls']){const el=$(id),v=el.value;el.innerHTML='<option value="">All stores</option>'+stores.map(s=>`<option ${s===v?'selected':''} value="${e(s)}">${e(s)}</option>`).join('')}
+const pe=O.filter(o=>!o.delivered),de=O.filter(o=>o.delivered),sum=a=>a.reduce((t,o)=>t+prof(o),0);
+$('#st').innerHTML=[['Pending',pe.length],['Delivered',de.length],['Profit (delivered)',fm(sum(de))],['Profit (pending)',fm(sum(pe))],['Total sales',fm(O.reduce((t,o)=>t+o.price,0))]].map(([a,b])=>`<div><b>${b}</b><span>${a}</span></div>`).join('');
+const L=flt().filter(o=>!!o.delivered===(tab==='d')).reverse();
+$('#tb').innerHTML=L.map((o,i)=>`<tr><td>${L.length-i}</td><td>${e(o.date)}</td><td>${e(o.customer)}</td><td>${e(o.phone)}</td><td>${o.img?`<img class="th" src="${o.img}" data-z="${o.id}">`:''}${e(o.product)}</td><td>${e(o.store)}</td><td class="n">${fm(o.cost)}</td><td class="n">${fm(o.price)}</td><td class="n pf ${prof(o)<0?'neg':''}">${fm(prof(o))}</td><td><input type="checkbox" data-d="${o.id}" ${o.delivered?'checked':''}></td><td><button data-e="${o.id}">Edit</button> <button class="x" data-x="${o.id}">Delete</button></td></tr>`).join('')||'<tr><td colspan="11" style="text-align:center;color:var(--mu)">No orders here</td></tr>';
+renderLog()}
+function renderLog(){const s=$('#ls').value,t=$('#lt').value;let L=O.filter(o=>(!s||o.store===s)&&(t==='all'||(t==='delivered')===!!o.delivered)).sort((a,b)=>a.created-b.created);
+let h=L.map((o,i)=>`<tr><td>${i+1}</td><td>${e(o.customer)}</td><td>${e(o.phone)}</td><td>${e(o.product)}</td><td>${e(o.store)}</td><td class="gr n">${fm(o.cost)}</td><td class="n">${fm(o.price)}</td><td>${o.delivered?'✓':''}</td></tr>`).join('');
+for(let i=L.length;i<Math.max(35,L.length);i++)h+=`<tr><td>${i+1}</td><td></td><td></td><td></td><td></td><td class="gr"></td><td></td><td></td></tr>`;$('#lg').innerHTML=h}
+$('#ls').onchange=$('#lt').onchange=renderLog;$('#q').oninput=$('#fs').onchange=render;
+$('#tb').onclick=async ev=>{const t=ev.target,o=O.find(x=>x.id===(t.dataset.d||t.dataset.e||t.dataset.x||t.dataset.z));if(!o)return;
+if(t.dataset.z){$('#lbi').src=o.img;$('#lb').style.display='flex'}
+if(t.dataset.d){o.delivered=t.checked;o.deliveredOn=t.checked?today():null;await tx('readwrite',s=>s.put(o));load()}
+if(t.dataset.x&&confirm('Delete this order?\n'+o.customer+' – '+o.product)){await tx('readwrite',s=>s.delete(o.id));load()}
+if(t.dataset.e){eid=o.id;img=o.img||'';$('#date').value=o.date;$('#cu').value=o.customer;$('#ph').value=o.phone;$('#pr').value=o.product;$('#sn').value=o.store;$('#co').value=o.cost;$('#sp').value=o.price;calc();$('#pv').src=img;$('#pv').classList.toggle('hide',!img);$('#sv').textContent='Save Changes';$('#cn').classList.remove('hide');scrollTo({top:0,behavior:'smooth'})}};
+const sw=v=>{$('#v1').classList.toggle('hide',v!==1);$('#v2').classList.toggle('hide',v!==2);$('#n1').classList.toggle('on',v===1);$('#n2').classList.toggle('on',v===2)};$('#n1').onclick=()=>sw(1);$('#n2').onclick=()=>sw(2);
+$('#t1').onclick=()=>{tab='p';$('#t1').classList.add('on');$('#t2').classList.remove('on');render()};$('#t2').onclick=()=>{tab='d';$('#t2').classList.add('on');$('#t1').classList.remove('on');render()};
+const dl=(n,t,m)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:m}));a.download=n;a.click()};
+$('#csv').onclick=()=>dl('orders.csv','\ufeffNo,Date,Customer,Phone,Product,Store,Cost,Price,Profit,Delivered\n'+O.sort((a,b)=>a.created-b.created).map((o,i)=>[i+1,o.date,o.customer,o.phone,o.product,o.store,o.cost,o.price,prof(o),o.delivered?'Yes':'No'].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n'),'text/csv');
+$('#bk').onclick=()=>dl('ff-orders-backup-'+today()+'.json',JSON.stringify(O),'application/json');
+$('#rs').onchange=async ev=>{try{const a=JSON.parse(await ev.target.files[0].text());if(!Array.isArray(a)||!confirm('Restore '+a.length+' orders? Same orders will be overwritten.'))return;await tx('readwrite',s=>{a.forEach(o=>s.put(o));return s.count()});load()}catch{alert('Invalid backup file')}ev.target.value=''};
+let dp;addEventListener('beforeinstallprompt',ev=>{ev.preventDefault();dp=ev;$('#inst').classList.remove('hide')});$('#inst').onclick=async()=>{dp.prompt();await dp.userChoice;$('#inst').classList.add('hide')};
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+navigator.storage?.persist?.();load();
+</script></body></html>
